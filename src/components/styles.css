@@ -1,0 +1,7 @@
+.passwordGenerator__main-container {
+}
+
+.password-generator__option-container {
+  display: flex;
+  gap: 1rem;
+}
