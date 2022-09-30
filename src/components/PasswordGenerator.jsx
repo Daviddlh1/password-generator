@@ -6,25 +6,16 @@ import activeRightArrow from "./icons/active-right-arrow.png";
 import "./styles/PasswordGenerator.css";
 import { useRef, useState } from "react";
 
-// const initialParameters = {
-//   lenght: 10,
-//   uppercase: false,
-//   lowercase: false,
-//   numbers: false,
-//   symbols: false,
-// };
 
 const PasswordGenerator = () => {
   const [arrowIcon, setArrowIcon] = useState(rightArrow);
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const [passwordLength, setPasswordLength] = useState(10);
   const [uppercaseParameter, setUppercaseParameter] = useState(false);
   const [lowercaseParameter, setlowercaseParameter] = useState(false);
   const [numbersParameter, setNumbersParameters] = useState(false);
   const [symbolsParameter, setSymbolsParameter] = useState(false);
   const [result, setResult] = useState("");
-  const sliderRef = useRef();
-  //const [passwordParameters, setPasswordParameters] = useState(initialParameters);
+  const sliderRef = useRef(null);
 
   const lowercase = "abcdefghijklmnopqrstuvwxyz";
   const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -40,41 +31,38 @@ const PasswordGenerator = () => {
     setArrowIcon(rightArrow);
   };
 
-  const charactersLength = async (length) => {
-    console.log(length);
-    await setPasswordLength(length);
-    console.log("passwordLength", passwordLength);
-  };
+  const getRandomCharFromString = (str) => str.charAt(Math.floor(Math.random() * str.length))
 
   const generatePassword = () => {
     let charactersPool = "";
     let response = "";
     if (lowercaseParameter) {
       charactersPool += lowercase;
+      response += getRandomCharFromString(lowercase)
     }
     if (uppercaseParameter) {
       charactersPool += uppercase;
+      response += getRandomCharFromString(uppercase)
     }
     if (numbersParameter) {
       charactersPool += numbers;
+      response += getRandomCharFromString(numbers)
     }
     if (symbolsParameter) {
       charactersPool += symbols;
+      response += getRandomCharFromString(symbols)
     }
-    console.log("passwordLength", passwordLength);
-    for (let i = 0; i <= passwordLength; i++) {
-      response +=
-        charactersPool[Math.floor(Math.random() * (25 - 10 + 1) + 10)];
+    for (let i = response.length; i < Number(sliderRef.current.value) + 10; i++) {
+      response += charactersPool[Math.floor(Math.random() * charactersPool.length)];
     }
-    console.log(response);
-    return response;
+    setResult(response);
   };
 
   return (
     <div className="password-generator__main-container">
       <h1>Password generator</h1>
       <div className="password-generator__containers password-generator__first-container">
-        <input className="password-generator__output" disabled type="text" />
+        <input className="password-generator__output" disabled type="text" value={result}/>
         <img src={copyIcon} className="password-generator__output--icon" />
       </div>
       <div className="password-generator__containers password-generator__second-container">
@@ -82,7 +70,6 @@ const PasswordGenerator = () => {
           minValue={10}
           maxValue={25}
           step={1}
-          charactersLength={charactersLength}
           sliderRef={sliderRef}
         />
         <div>
@@ -124,7 +111,7 @@ const PasswordGenerator = () => {
           </div>
         </div>
         <button
-          onClick={() => setResult(generatePassword())}
+          onClick={() => generatePassword()}
           onMouseEnter={() => handdleMouseEnter()}
           onMouseLeave={() => handleMouseLeave()}
           className="password-generator__button"
