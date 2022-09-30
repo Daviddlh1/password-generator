@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import "./styles/Slider.css";
 
-const Slider = ({ minValue, maxValue, step }) => {
+const Slider = ({ minValue, maxValue, step, charactersLength }) => {
   const [value, setValue] = useState(0);
   const rangeInput = useRef(null);
   const getBackgroundSize = () => {
@@ -9,9 +9,12 @@ const Slider = ({ minValue, maxValue, step }) => {
   };
 
   const setProgressBar = () => {
+    console.log(rangeInput)
     setValue(Math.floor(rangeInput.current.value));
-    console.log(value);
+    const length = value + minValue;
+    charactersLength(length);
   };
+
   return (
     <div className="slider__main-container">
       <div className="slider__first-container">
@@ -29,6 +32,7 @@ const Slider = ({ minValue, maxValue, step }) => {
           className="slider__slider"
           ref={rangeInput}
           onChange={setProgressBar}
+          onClick={setProgressBar}
           min={0}
           max={maxValue - minValue}
           defaultValue={0}
