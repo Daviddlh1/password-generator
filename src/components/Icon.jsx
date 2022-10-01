@@ -1,4 +1,4 @@
-import "./styles/icon.css"
+import "./styles/Icon.css"
 
 const Icon = ({icon}) => (<img className="icon" src={icon}/>)
 

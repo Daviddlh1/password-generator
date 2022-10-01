@@ -1,15 +1,51 @@
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import "./styles/Slider.css";
 
-const Slider = ({ minValue, maxValue, step, sliderRef }) => {
+const Slider = ({ minValue, maxValue, step, sliderRef, passwordStrength, setPasswordStrength }) => {
   const [value, setValue] = useState(0);
-  const rangeInput = useRef(null);
+  const [modifyAllowed, setModifyAllowed] = useState(true)
   const getBackgroundSize = () => {
     return { backgroundSize: `${(value * 100) / (maxValue - minValue)}% 100%` };
   };
 
+  useEffect(() => {
+    setPasswordStrengthBasedOnLength()
+  }, [value])
+
+  const setPasswordStrengthBasedOnLength = () => {
+    if(value + 10 == 16 && modifyAllowed){
+      setPasswordStrength(passwordStrength +1)
+      setModifyAllowed(false)
+    }else if(value + 10 == 15 && !modifyAllowed){
+      setPasswordStrength(passwordStrength - 1)
+      setModifyAllowed(true)
+    }else if(value + 10 > 15 && modifyAllowed){
+      setPasswordStrength(passwordStrength + 1)
+      setModifyAllowed(false)
+    }else if(value + 10 < 15 && !modifyAllowed) {
+      setPasswordStrength(passwordStrength - 1)
+      setModifyAllowed(true)
+    }
+  }
+
+
+  // const test = () => {
+  //   let respuesta = {
+  //     respuesta: 0,
+  //     modify: true
+  //   }
+  //   let x
+
+  //   if(respuesta.respuesta = 16 && respuesta.modify){
+  //     //suma uno y modify = false
+  //   }else if(respuesta.respuesta = 16 && !respuesta.modify){
+  //     //resta uno y modify = true
+  //   }
+
+  // }
+
+
   const setProgressBar = () => {
-    console.log(sliderRef.current.value)
     setValue(Math.floor(sliderRef.current.value));
   };
 

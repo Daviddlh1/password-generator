@@ -3,8 +3,9 @@ import Icon from "./Icon";
 import copyIcon from "./icons/copy.png";
 import rightArrow from "./icons/right-arrow.png";
 import activeRightArrow from "./icons/active-right-arrow.png";
+import PasswordStrength from "./PasswordStrength";
 import "./styles/PasswordGenerator.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const PasswordGenerator = () => {
   const [arrowIcon, setArrowIcon] = useState(rightArrow);
@@ -15,6 +16,11 @@ const PasswordGenerator = () => {
   const [symbolsParameter, setSymbolsParameter] = useState(false);
   const [result, setResult] = useState("");
   const sliderRef = useRef(null);
+  const uppercaseRef = useRef(null)
+
+  // useEffect(() => {
+  //   console.log(passwordStrength)
+  // })
 
   const lowercase = "abcdefghijklmnopqrstuvwxyz";
   const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -25,42 +31,74 @@ const PasswordGenerator = () => {
     setArrowIcon(activeRightArrow);
   };
 
-  const getLength = () => {};
   const handleMouseLeave = () => {
     setArrowIcon(rightArrow);
   };
 
   const getRandomCharFromString = (str) =>
     str.charAt(Math.floor(Math.random() * str.length));
+  
+  const handleCheckboxClick = (e) => {
+    switch (e.target.name) {
+      case "uppercase":
+        setUppercaseParameter(!uppercaseParameter);
+        e.target.checked
+          ? setPasswordStrength(passwordStrength + 1)
+          : setPasswordStrength(passwordStrength - 1);
+        break;
+      case "lowercase":
+        setlowercaseParameter(!lowercaseParameter);
+        e.target.checked
+          ? setPasswordStrength(passwordStrength + 1)
+          : setPasswordStrength(passwordStrength - 1);
+        break;
+      case "numbers":
+        setNumbersParameters(!numbersParameter);
+        e.target.checked
+          ? setPasswordStrength(passwordStrength + 1)
+          : setPasswordStrength(passwordStrength - 1);
+        break;
+      case "symbols":
+        setSymbolsParameter(!symbolsParameter);
+        e.target.checked
+          ? setPasswordStrength(passwordStrength + 1)
+          : setPasswordStrength(passwordStrength - 1);
+        break;
+    }
+  };
 
   const generatePassword = () => {
-    let charactersPool = "";
-    let response = "";
-    if (lowercaseParameter) {
-      charactersPool += lowercase;
-      response += getRandomCharFromString(lowercase);
+    if(passwordStrength !== 0){
+      let charactersPool = "";
+      let response = "";
+      if (lowercaseParameter) {
+        charactersPool += lowercase;
+        response += getRandomCharFromString(lowercase);
+      }
+      if (uppercaseParameter) {
+        charactersPool += uppercase;
+        response += getRandomCharFromString(uppercase);
+      }
+      if (numbersParameter) {
+        charactersPool += numbers;
+        response += getRandomCharFromString(numbers);
+      }
+      if (symbolsParameter) {
+        charactersPool += symbols;
+        response += getRandomCharFromString(symbols);
+      }
+      for (
+        let i = response.length;
+        i < Number(sliderRef.current.value) + 10;
+        i++
+      ) {
+        response +=
+          charactersPool[Math.floor(Math.random() * charactersPool.length)];
+      }
+      setResult(response);
+    } else {
+      console.log("Estoy en else")
     }
-    if (uppercaseParameter) {
-      charactersPool += uppercase;
-      response += getRandomCharFromString(uppercase);
-    }
-    if (numbersParameter) {
-      charactersPool += numbers;
-      response += getRandomCharFromString(numbers);
-    }
-    if (symbolsParameter) {
-      charactersPool += symbols;
-      response += getRandomCharFromString(symbols);
-    }
-    for (
-      let i = response.length;
-      i < Number(sliderRef.current.value) + 10;
-      i++
-    ) {
-      response +=
-        charactersPool[Math.floor(Math.random() * charactersPool.length)];
-    }
-    setResult(response);
   };
 
   return (
@@ -76,16 +114,17 @@ const PasswordGenerator = () => {
         <img src={copyIcon} className="password-generator__output--icon" />
       </div>
       <div className="password-generator__containers password-generator__second-container">
-        <Slider minValue={10} maxValue={25} step={1} sliderRef={sliderRef} />
+        <Slider minValue={10} maxValue={25} step={1} sliderRef={sliderRef} passwordStrength={passwordStrength} setPasswordStrength={setPasswordStrength} />
         <div className="password-generator__options-main-container">
           <div className="password-generator__option-container">
             <div className="password-generator__chekbox--container">
               <input
+                ref={uppercaseRef}
                 className="password-generator__chekbox"
                 type="checkbox"
-                onClick={() => setUppercaseParameter(!uppercaseParameter)}
-                name="upercaseParameter"
-                id="upercaseParameter"
+                onClick={handleCheckboxClick}
+                name="uppercase"
+                id="uppercase"
               />
               <span className="password-generator__chekbox--checkmark"></span>
             </div>
@@ -97,7 +136,7 @@ const PasswordGenerator = () => {
               <input
                 className="password-generator__chekbox"
                 type="checkbox"
-                onClick={() => setlowercaseParameter(!lowercaseParameter)}
+                onClick={handleCheckboxClick}
                 name="lowercase"
                 id="lowercase"
               />
@@ -110,9 +149,9 @@ const PasswordGenerator = () => {
               <input
                 className="password-generator__chekbox"
                 type="checkbox"
-                onClick={() => setNumbersParameters(!numbersParameter)}
+                onClick={handleCheckboxClick}
                 name="numbers"
-                id="number"
+                id="numbers"
               />
               <span className="password-generator__chekbox--checkmark"></span>
             </div>
@@ -122,7 +161,7 @@ const PasswordGenerator = () => {
             <div className="password-generator__chekbox--container">
               <input
                 className="password-generator__chekbox"
-                onClick={() => setSymbolsParameter(!symbolsParameter)}
+                onClick={handleCheckboxClick}
                 type="checkbox"
                 name="symbols"
                 id="symbols"
@@ -132,6 +171,7 @@ const PasswordGenerator = () => {
             <p>Include Symbols</p>
           </div>
         </div>
+        <PasswordStrength strength={passwordStrength} sliderRef={sliderRef} />
         <button
           onClick={() => generatePassword()}
           onMouseEnter={() => handdleMouseEnter()}
