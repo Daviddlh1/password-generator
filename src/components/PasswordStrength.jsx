@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./styles/PasswordStrength.css";
 
 const PasswordStrength = ({ strength, sliderRef }) => {
-  const [passwordStrengthLevel, setPasswordStrengthLevel] = useState("-----");
+  const [passwordStrengthLevel, setPasswordStrengthLevel] = useState("---");
   const [barsLevel, setBarsLevel] = useState(0);
 
   useEffect(() => {
@@ -24,15 +24,15 @@ const PasswordStrength = ({ strength, sliderRef }) => {
         setBarsLevel(2);
         break;
       case 4:
-        setPasswordStrengthLevel("Super Strong");
+        setPasswordStrengthLevel("💪");
         setBarsLevel(3);
         break;
       case 5:
-        setPasswordStrengthLevel("Extremely Strong");
+        setPasswordStrengthLevel("😱");
         setBarsLevel(4);
         break;
       default:
-        setPasswordStrengthLevel("-----");
+        setPasswordStrengthLevel("---");
         break;
     }
   };
@@ -47,7 +47,7 @@ const PasswordStrength = ({ strength, sliderRef }) => {
             return (
               <span
                 className={
-                  passwordStrengthLevel === "-----"
+                  passwordStrengthLevel === "---"
                     ? "password-strength__level-bar"
                     : index <= barsLevel
                     ? "password-strength__level-bar active"
