@@ -6,7 +6,6 @@ import activeRightArrow from "./icons/active-right-arrow.png";
 import "./styles/PasswordGenerator.css";
 import { useRef, useState } from "react";
 
-
 const PasswordGenerator = () => {
   const [arrowIcon, setArrowIcon] = useState(rightArrow);
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -31,29 +30,35 @@ const PasswordGenerator = () => {
     setArrowIcon(rightArrow);
   };
 
-  const getRandomCharFromString = (str) => str.charAt(Math.floor(Math.random() * str.length))
+  const getRandomCharFromString = (str) =>
+    str.charAt(Math.floor(Math.random() * str.length));
 
   const generatePassword = () => {
     let charactersPool = "";
     let response = "";
     if (lowercaseParameter) {
       charactersPool += lowercase;
-      response += getRandomCharFromString(lowercase)
+      response += getRandomCharFromString(lowercase);
     }
     if (uppercaseParameter) {
       charactersPool += uppercase;
-      response += getRandomCharFromString(uppercase)
+      response += getRandomCharFromString(uppercase);
     }
     if (numbersParameter) {
       charactersPool += numbers;
-      response += getRandomCharFromString(numbers)
+      response += getRandomCharFromString(numbers);
     }
     if (symbolsParameter) {
       charactersPool += symbols;
-      response += getRandomCharFromString(symbols)
+      response += getRandomCharFromString(symbols);
     }
-    for (let i = response.length; i < Number(sliderRef.current.value) + 10; i++) {
-      response += charactersPool[Math.floor(Math.random() * charactersPool.length)];
+    for (
+      let i = response.length;
+      i < Number(sliderRef.current.value) + 10;
+      i++
+    ) {
+      response +=
+        charactersPool[Math.floor(Math.random() * charactersPool.length)];
     }
     setResult(response);
   };
@@ -62,51 +67,68 @@ const PasswordGenerator = () => {
     <div className="password-generator__main-container">
       <h1>Password generator</h1>
       <div className="password-generator__containers password-generator__first-container">
-        <input className="password-generator__output" disabled type="text" value={result}/>
+        <input
+          className="password-generator__output"
+          disabled
+          type="text"
+          value={result}
+        />
         <img src={copyIcon} className="password-generator__output--icon" />
       </div>
       <div className="password-generator__containers password-generator__second-container">
-        <Slider
-          minValue={10}
-          maxValue={25}
-          step={1}
-          sliderRef={sliderRef}
-        />
-        <div>
+        <Slider minValue={10} maxValue={25} step={1} sliderRef={sliderRef} />
+        <div className="password-generator__options-main-container">
           <div className="password-generator__option-container">
-            <input
-              type="checkbox"
-              onClick={() => setUppercaseParameter(!uppercaseParameter)}
-              name="upercaseParameter"
-              id="upercaseParameter"
-            />
+            <div className="password-generator__chekbox--container">
+              <input
+                className="password-generator__chekbox"
+                type="checkbox"
+                onClick={() => setUppercaseParameter(!uppercaseParameter)}
+                name="upercaseParameter"
+                id="upercaseParameter"
+              />
+              <span className="password-generator__chekbox--checkmark"></span>
+            </div>
+
             <p>Include Uppercase Letters</p>
           </div>
           <div className="password-generator__option-container">
-            <input
-              type="checkbox"
-              onClick={() => setlowercaseParameter(!lowercaseParameter)}
-              name="lowercase"
-              id="lowercase"
-            />
+            <div className="password-generator__chekbox--container">
+              <input
+                className="password-generator__chekbox"
+                type="checkbox"
+                onClick={() => setlowercaseParameter(!lowercaseParameter)}
+                name="lowercase"
+                id="lowercase"
+              />
+              <span className="password-generator__chekbox--checkmark"></span>
+            </div>
             <p>Include Lowercase Letters</p>
           </div>
           <div className="password-generator__option-container">
-            <input
-              type="checkbox"
-              onClick={() => setNumbersParameters(!numbersParameter)}
-              name="numbers"
-              id="number"
-            />
+            <div className="password-generator__chekbox--container">
+              <input
+                className="password-generator__chekbox"
+                type="checkbox"
+                onClick={() => setNumbersParameters(!numbersParameter)}
+                name="numbers"
+                id="number"
+              />
+              <span className="password-generator__chekbox--checkmark"></span>
+            </div>
             <p>Include Numbers</p>
           </div>
           <div className="password-generator__option-container">
-            <input
-              onClick={() => setSymbolsParameter(!symbolsParameter)}
-              type="checkbox"
-              name="symbols"
-              id="symbols"
-            />
+            <div className="password-generator__chekbox--container">
+              <input
+                className="password-generator__chekbox"
+                onClick={() => setSymbolsParameter(!symbolsParameter)}
+                type="checkbox"
+                name="symbols"
+                id="symbols"
+              />
+              <span className="password-generator__chekbox--checkmark"></span>
+            </div>
             <p>Include Symbols</p>
           </div>
         </div>
