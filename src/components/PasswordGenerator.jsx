@@ -98,8 +98,6 @@ const PasswordGenerator = () => {
         response += getRandomCharFromString(charactersPool);
       }
       setResult(response);
-    } else {
-      console.log("Estoy en else");
     }
   };
 

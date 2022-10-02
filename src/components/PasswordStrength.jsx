@@ -7,7 +7,6 @@ const PasswordStrength = ({ strength, hasAnOption }) => {
 
   useEffect(() => {
     calculateStrengthLevel();
-    console.log(strength)
   }, [strength]);
 
   const calculateStrengthLevel = () => {
