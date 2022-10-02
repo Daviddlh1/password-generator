@@ -1,39 +1,50 @@
 import { useEffect, useState } from "react";
 import "./styles/PasswordStrength.css";
 
-const PasswordStrength = ({ strength, sliderRef }) => {
+const PasswordStrength = ({ strength, hasAnOption }) => {
   const [passwordStrengthLevel, setPasswordStrengthLevel] = useState("---");
   const [barsLevel, setBarsLevel] = useState(0);
 
   useEffect(() => {
     calculateStrengthLevel();
-  }, [strength, sliderRef]);
+    console.log(strength)
+  }, [strength]);
 
   const calculateStrengthLevel = () => {
-    switch (strength) {
-      case 1:
-        setPasswordStrengthLevel("Weak");
-        setBarsLevel(0);
-        break;
-      case 2:
-        setPasswordStrengthLevel("Medium");
-        setBarsLevel(1);
-        break;
-      case 3:
-        setPasswordStrengthLevel("Strong");
-        setBarsLevel(2);
-        break;
-      case 4:
-        setPasswordStrengthLevel("💪");
-        setBarsLevel(3);
-        break;
-      case 5:
-        setPasswordStrengthLevel("😱");
-        setBarsLevel(4);
-        break;
-      default:
-        setPasswordStrengthLevel("---");
-        break;
+    if (hasAnOption()) {
+      switch (strength) {
+        case 1:
+          setPasswordStrengthLevel("Weak");
+          setBarsLevel(0);
+          break;
+        case 2:
+          setPasswordStrengthLevel("Medium");
+          setBarsLevel(1);
+          break;
+        case 3:
+          setPasswordStrengthLevel("Strong");
+          setBarsLevel(2);
+          break;
+        case 4:
+          setPasswordStrengthLevel("💪");
+          setBarsLevel(3);
+          break;
+        case 5:
+          setPasswordStrengthLevel("😱");
+          setBarsLevel(4);
+          break;
+        case 6:
+          setPasswordStrengthLevel("😱");
+          setBarsLevel(4);
+          break;
+        default:
+          setPasswordStrengthLevel("---");
+          setBarsLevel(0)
+          break;
+      }
+    } else {
+      setPasswordStrengthLevel("---");
+      setBarsLevel(0)
     }
   };
 
