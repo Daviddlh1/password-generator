@@ -103,7 +103,7 @@ const PasswordGenerator = () => {
 
   return (
     <div className="password-generator__main-container">
-      <h1>Password generator</h1>
+      <h1>Password Generator</h1>
       <div className="password-generator__containers password-generator__first-container">
         <input
           className="password-generator__output"

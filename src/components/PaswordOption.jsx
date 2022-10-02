@@ -9,10 +9,14 @@ const PasswordOption = ({ handleClick, name, optionMessage }) => {
           type="checkbox"
           onClick={handleClick}
           name={name}
+          id={name}
         />
-        <span className="password-option__chekbox--checkmark"></span>
+        <span
+          onClick={handleClick}
+          className="password-option__chekbox--checkmark"
+        ></span>
       </div>
-      <p>{optionMessage}</p>
+        <p for={name}>{optionMessage}</p>
     </div>
   );
 };
